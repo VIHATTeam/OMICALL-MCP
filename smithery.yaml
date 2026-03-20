@@ -1,0 +1,46 @@
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      username:
+        type: string
+        title: Email
+        description: OmiCall account email
+      password:
+        type: string
+        title: Password
+        description: OmiCall account password
+        format: password
+      domain:
+        type: string
+        title: Domain
+        description: Company domain
+      apiKey:
+        type: string
+        title: API Key
+        description: API key (alternative to email/password)
+      tenantId:
+        type: string
+        title: Tenant ID
+        description: Tenant ID (auto-select if only 1)
+      env:
+        type: string
+        title: Environment
+        description: stg (staging) or prod (production)
+        enum: ["stg", "prod"]
+        default: "stg"
+    required: ["username", "password", "domain"]
+  commandFunction: |-
+    (config) => ({
+      command: "npx",
+      args: ["omicall-mcp"],
+      env: {
+        OMICALL_USERNAME: config.username,
+        OMICALL_PASSWORD: config.password,
+        OMICALL_DOMAIN: config.domain,
+        ...(config.apiKey && { OMICALL_API_KEY: config.apiKey }),
+        ...(config.tenantId && { OMICALL_TENANT_ID: config.tenantId }),
+        ...(config.env && { OMICALL_ENV: config.env }),
+      }
+    })
