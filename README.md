@@ -26,11 +26,17 @@ npx omicall-mcp
 <details>
 <summary><strong>Claude Code</strong></summary>
 
+**Global (dùng cho tất cả projects):**
+
 ```bash
-claude mcp add omicall-mcp -- npx omicall-mcp
+claude mcp add omicall-mcp --scope user \
+  -e OMICALL_USERNAME=admin@company.com \
+  -e OMICALL_PASSWORD=your-password \
+  -e OMICALL_DOMAIN=your-company \
+  -- npx omicall-mcp
 ```
 
-Or add to project `.mcp.json`:
+**Per-project** — add to `.mcp.json`:
 
 ```json
 {
@@ -134,25 +140,6 @@ Add to `.vscode/mcp.json`:
 }
 ```
 </details>
-
----
-
-## Configuration
-
-Config via environment variables (recommended) or CLI args.
-
-| Env Var | CLI Arg | Required | Description |
-|---------|---------|----------|-------------|
-| `OMICALL_USERNAME` | `--username` | Yes* | Email address |
-| `OMICALL_PASSWORD` | `--password` | Yes* | Password |
-| `OMICALL_DOMAIN` | `--domain` | Yes* | Company domain |
-| `OMICALL_API_KEY` | `--api-key` | Alt* | API key (alternative auth) |
-| `OMICALL_TENANT_ID` | `--tenant-id` | No | Tenant ID (auto-select if 1) |
-| `OMICALL_ENV` | `--env` | No | `prod` (default) or `stg` |
-
-\* Either username/password/domain OR api-key required.
-
-> **Security note**: Prefer env vars over CLI args — CLI args are visible in process list.
 
 ---
 
