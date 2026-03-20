@@ -40,6 +40,18 @@ claude mcp add OMICall-mcp --scope user \
 claude permissions allow "mcp__OMICall-mcp__*"
 ```
 
+**Persist permissions** — add to `~/.claude/settings.json`:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "mcp__OMICall-mcp__*"
+    ]
+  }
+}
+```
+
 **Per-project** — add to `.mcp.json`:
 
 ```json
