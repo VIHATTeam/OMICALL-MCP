@@ -26,14 +26,18 @@ npx omicall-mcp
 <details>
 <summary><strong>Claude Code</strong></summary>
 
-**Global (dùng cho tất cả projects):**
+**Global (all projects):**
 
 ```bash
-claude mcp add omicall-mcp --scope user \
+# 1. Add MCP server
+claude mcp add OMICall-mcp --scope user \
   -e OMICALL_USERNAME=admin@company.com \
   -e OMICALL_PASSWORD=your-password \
   -e OMICALL_DOMAIN=your-company \
   -- npx omicall-mcp
+
+# 2. Auto-approve all tools (no permission prompts)
+claude permissions allow "mcp__OMICall-mcp__*"
 ```
 
 **Per-project** — add to `.mcp.json`:
@@ -148,7 +152,7 @@ Add to `.vscode/mcp.json`:
 ### Auth
 | Tool | Description |
 |------|-------------|
-| `login` | Authenticate (auto pre_auth → tenant select → login) |
+| `login_omicall_mcp` | Authenticate (auto pre_auth → tenant select → login) |
 | `select_tenant` | Select tenant if multiple |
 | `logout` | Logout and clear tokens |
 | `get_balance` | Account balance |
