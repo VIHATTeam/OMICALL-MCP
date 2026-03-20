@@ -5,13 +5,13 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/omicall-mcp"><img src="https://img.shields.io/npm/v/omicall-mcp.svg" alt="npm version" /></a>
   <a href="https://www.npmjs.com/package/omicall-mcp"><img src="https://img.shields.io/npm/dm/omicall-mcp.svg" alt="npm downloads" /></a>
-  <a href="https://github.com/hiepxanh/omicall-mcp/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/omicall-mcp.svg" alt="license" /></a>
+  <a href="https://github.com/VIHATTeam/OMICALL-MCP/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/omicall-mcp.svg" alt="license" /></a>
   <a href="https://smithery.ai/server/omicall-mcp"><img src="https://smithery.ai/badge/omicall-mcp" alt="smithery" /></a>
 </p>
 
 # OMICall MCP Server
 
-MCP server for [OMICall](https://omicall.com/) / [OmiCRM](https://omicrm.com/) APIs.
+MCP server for [OMICall](https://omicall.com/) / [OMICRM](https://omicrm.com/) APIs.
 
 80+ tools across 9 groups: **Auth**, **Call Center**, **Ticket**, **Multi-Channel** (Zalo, Facebook, Telegram, LiveTalk), **Agent**, **Notifications**, **Webhook**, **Auto Call**, and **AI**.
 
@@ -41,8 +41,7 @@ Or add to project `.mcp.json`:
       "env": {
         "OMICALL_USERNAME": "admin@company.com",
         "OMICALL_PASSWORD": "your-password",
-        "OMICALL_DOMAIN": "your-company",
-        "OMICALL_ENV": "stg"
+        "OMICALL_DOMAIN": "your-company"
       }
     }
   }
@@ -64,8 +63,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
       "env": {
         "OMICALL_USERNAME": "admin@company.com",
         "OMICALL_PASSWORD": "your-password",
-        "OMICALL_DOMAIN": "your-company",
-        "OMICALL_ENV": "stg"
+        "OMICALL_DOMAIN": "your-company"
       }
     }
   }
@@ -86,8 +84,7 @@ Settings > MCP Servers > Add:
     "env": {
       "OMICALL_USERNAME": "admin@company.com",
       "OMICALL_PASSWORD": "your-password",
-      "OMICALL_DOMAIN": "your-company",
-      "OMICALL_ENV": "stg"
+      "OMICALL_DOMAIN": "your-company"
     }
   }
 }
@@ -108,8 +105,7 @@ Add to `~/.codeium/windsurf/mcp_config.json`:
       "env": {
         "OMICALL_USERNAME": "admin@company.com",
         "OMICALL_PASSWORD": "your-password",
-        "OMICALL_DOMAIN": "your-company",
-        "OMICALL_ENV": "stg"
+        "OMICALL_DOMAIN": "your-company"
       }
     }
   }
@@ -131,8 +127,7 @@ Add to `.vscode/mcp.json`:
       "env": {
         "OMICALL_USERNAME": "admin@company.com",
         "OMICALL_PASSWORD": "your-password",
-        "OMICALL_DOMAIN": "your-company",
-        "OMICALL_ENV": "stg"
+        "OMICALL_DOMAIN": "your-company"
       }
     }
   }
@@ -153,7 +148,7 @@ Config via environment variables (recommended) or CLI args.
 | `OMICALL_DOMAIN` | `--domain` | Yes* | Company domain |
 | `OMICALL_API_KEY` | `--api-key` | Alt* | API key (alternative auth) |
 | `OMICALL_TENANT_ID` | `--tenant-id` | No | Tenant ID (auto-select if 1) |
-| `OMICALL_ENV` | `--env` | No | `stg` (default) or `prod` |
+| `OMICALL_ENV` | `--env` | No | `prod` (default) or `stg` |
 
 \* Either username/password/domain OR api-key required.
 
@@ -258,43 +253,9 @@ Disabled module returns: _"Module X is not enabled in your service package."_
 
 ---
 
-## Architecture
+## Contributing
 
-```
-src/
-├── index.ts                        # Entry (stdio transport)
-├── server.ts                       # Tool registration + HTTP client wiring
-├── core/
-│   ├── config.ts                   # 22 service URLs, env/CLI config
-│   ├── auth-manager.ts             # pre_auth → login_mobile → token refresh
-│   ├── http-client.ts              # Axios + auto 401 retry
-│   ├── service-package.ts          # Module + channel feature gate
-│   ├── types.ts / errors.ts        # Shared types, error handling
-├── tools/
-│   ├── auth/                       # Login, logout, balance, package
-│   ├── callcenter/                 # Calls, extensions, hotlines, groups, IVR
-│   ├── ticket/                     # CRUD, notes, evaluation
-│   ├── multichannel/               # 6 channels: search, send, messages
-│   ├── agent/                      # Employees, PBX info, notifications
-│   ├── webhook/                    # CRUD
-│   ├── autocall/                   # Auto dialing
-│   └── ai/                         # TTS, STT
-└── utils/
-    ├── response.ts                 # Paginated response extraction
-    ├── redact.ts                   # Sensitive field redaction
-    └── pagination.ts               # Pagination helpers
-```
-
-## Development
-
-```bash
-git clone https://github.com/hiepxanh/omicall-mcp.git
-cd omicall-mcp
-npm install
-npm run build       # Production build
-npm run dev         # Watch mode
-npm run typecheck   # Type checking
-```
+For development setup and contribution guidelines, please contact [VIHATTeam](https://github.com/VIHATTeam).
 
 ## License
 

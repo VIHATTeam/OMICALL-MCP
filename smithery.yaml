@@ -29,7 +29,7 @@ startCommand:
         title: Environment
         description: stg (staging) or prod (production)
         enum: ["stg", "prod"]
-        default: "stg"
+        default: "prod"
     required: ["username", "password", "domain"]
   commandFunction: |-
     (config) => ({
