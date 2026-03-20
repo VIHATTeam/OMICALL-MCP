@@ -24,12 +24,6 @@ startCommand:
         type: string
         title: Tenant ID
         description: Tenant ID (auto-select if only 1)
-      env:
-        type: string
-        title: Environment
-        description: stg (staging) or prod (production)
-        enum: ["stg", "prod"]
-        default: "prod"
     required: ["username", "password", "domain"]
   commandFunction: |-
     (config) => ({
@@ -41,6 +35,5 @@ startCommand:
         OMICALL_DOMAIN: config.domain,
         ...(config.apiKey && { OMICALL_API_KEY: config.apiKey }),
         ...(config.tenantId && { OMICALL_TENANT_ID: config.tenantId }),
-        ...(config.env && { OMICALL_ENV: config.env }),
       }
     })
