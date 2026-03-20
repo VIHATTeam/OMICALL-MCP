@@ -22,7 +22,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: npm ci --production
+        run: npm install --omit=dev
 
       - name: Verify dist exists
         run: |
