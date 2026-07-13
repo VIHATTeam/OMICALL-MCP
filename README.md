@@ -15,6 +15,10 @@ MCP server for [OMICall](https://omicall.com/) / [OMICRM](https://omicrm.com/) A
 
 80+ tools across 9 groups: **Auth**, **Call Center**, **Ticket**, **Multi-Channel** (Zalo, Facebook, Telegram, LiveTalk), **Agent**, **Notifications**, **Webhook**, **Auto Call**, and **AI**.
 
+## Requirements
+
+- **Node.js 18 or newer** (`node --version`). Older runtimes are not supported and will exit with a clear message.
+
 ## Quick Start
 
 ```bash
@@ -255,6 +259,17 @@ Each tool auto-checks if the required module is enabled for your account:
 Disabled module returns: _"Module X is not enabled in your service package."_
 
 ---
+
+## Troubleshooting
+
+**`npm error code ETARGET` / "No matching version found"** — your local npm metadata is stale (a version was just published). Clear the npx cache and retry:
+
+```bash
+rm -rf ~/.npm/_npx
+npx omicall-mcp@latest
+```
+
+**Server disconnects on startup** — make sure you are on Node.js 18+ (`node --version`). See [Requirements](#requirements).
 
 ## Contributing
 

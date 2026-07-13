@@ -1,0 +1,58 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.vihatteam/omicall-mcp",
+  "description": "MCP server for OmiCall/OmiCRM APIs — Call Center, Ticket, Multi-Channel (Zalo, Facebook, Telegram, LiveTalk), Contact, Agent, Webhook, Auto Call, and AI (TTS/STT).",
+  "version": "1.3.1",
+  "repository": {
+    "url": "https://github.com/VIHATTeam/OMICALL-MCP",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "omicall-mcp",
+      "version": "1.3.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "OMICALL_USERNAME",
+          "description": "OmiCall login email",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "OMICALL_PASSWORD",
+          "description": "OmiCall login password",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "OMICALL_DOMAIN",
+          "description": "OmiCall company domain",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "OMICALL_API_KEY",
+          "description": "OmiCall API key (alternative to email/password auth)",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "OMICALL_TENANT_ID",
+          "description": "Tenant ID to auto-select when the account has multiple tenants",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "OMICALL_ENV",
+          "description": "Environment: stg or prod",
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}
