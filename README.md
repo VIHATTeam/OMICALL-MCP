@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/vihatteam-omicall-mcp-badge.png)](https://mseep.ai/app/vihatteam-omicall-mcp)
+
 <p align="center">
   <img src="assets/omicall-mcp.png" alt="OMICall MCP" width="600" />
 </p>
