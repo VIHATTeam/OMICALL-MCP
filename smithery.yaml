@@ -24,6 +24,10 @@ startCommand:
         type: string
         title: Tenant ID
         description: Tenant ID (auto-select if only 1)
+      toolsets:
+        type: string
+        title: Toolsets
+        description: Comma-separated tool groups to load, e.g. "ticket,contact" (default all)
     required: ["username", "password", "domain"]
   commandFunction: |-
     (config) => ({
@@ -35,5 +39,6 @@ startCommand:
         OMICALL_DOMAIN: config.domain,
         ...(config.apiKey && { OMICALL_API_KEY: config.apiKey }),
         ...(config.tenantId && { OMICALL_TENANT_ID: config.tenantId }),
+        ...(config.toolsets && { OMICALL_TOOLSETS: config.toolsets }),
       }
     })

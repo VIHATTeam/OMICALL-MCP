@@ -6,24 +6,28 @@ on:
       - 'v*'
 
 permissions:
-  contents: write
+  contents: write   # create the GitHub Release
+  id-token: write   # npm trusted publishing (OIDC) + provenance — no NPM_TOKEN secret
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Must match "Environment name" in the npm Trusted Publisher settings. Restrict this
+    # environment to `v*` tags in GitHub so a workflow run from another ref can't publish.
+    environment: npm-publish
     steps:
+      # Actions pinned to commit SHAs (tag in comment) so a moved/compromised tag can't inject code
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Install dependencies
-        run: npm install --omit=dev
-
+      # dist/ is prebuilt and committed; publishing needs no install step,
+      # which also keeps unpinned transitive packages out of the publish job.
       - name: Verify dist exists
         run: |
           if [ ! -f dist/index.js ]; then
@@ -32,12 +36,15 @@ jobs:
           fi
           echo "dist/index.js size: $(wc -c < dist/index.js) bytes"
 
+      # Trusted publishing needs npm >= 11.5.1 (Node 22 ships npm 10)
+      - name: Upgrade npm
+        run: npm install -g npm@^11.5.1 && npm --version
+
+      # Auth comes from the GitHub OIDC token exchanged with npm — no long-lived secret
       - name: Publish to npm
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public --provenance
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           generate_release_notes: true

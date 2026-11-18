@@ -4,6 +4,65 @@ All notable changes to OmiCall MCP Server are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.4.0] - 2026-11-17
+
+### Added
+- AI configuration tools: view AI chatbots (OmiBot) and their settings, available AI models, knowledge documents and FAQ sets, AI conversation assistants, and voice callbot scripts including SmartAgent (AI voice agent); turn the AI bot on/off for a conversation; enable/disable conversation assistants; pause callbot campaigns.
+- OmiFlow tools: list flows, see flows with errors, view a flow's steps, performance reports and run history, and pause or resume a flow.
+- New toolset names `aiconfig` and `omiflow` for `OMICALL_TOOLSETS`.
+
+### Fixed
+- Contact search/count filters now work in MCP clients that don't support JSON Schema references (e.g. OpenAI Codex).
+
+### Documentation
+- Setup instructions for OpenAI Codex.
+- Rewritten README: example prompts, full configuration table, every tool with its impact level, toolset sizes, and a Safety section. Recommended permissions now auto-approve read-only tools only.
+- `OMICALL_TOOLSETS` can now be set from the MCP Registry and Smithery configuration.
+
+### Security
+- Hardened the new AI and OmiFlow tools: permission checks matching the web app, rate limits on on/off switches, safer handling of third-party text, and redaction of credentials in AI prompts.
+- Stricter input validation across all tools (length limits on every text and list parameter, clear errors for invalid dates).
+
+### Fixed
+- Creating and updating tickets, changing ticket status, and adding/editing ticket notes now work reliably. Notes added through the MCP are internal (never shown to the customer). Tickets with pinned items must be edited in the web app.
+- Permission checks now load the signed-in user's roles correctly.
+
+### Fixed
+- Many call-center, ticket, agent and messaging tools that failed with "not found" now work: hotlines, ring groups, IVR menus, call scripts, audio files, extension lookup, call details and evaluation, ticket statistics and evaluation, contact lookup by phone, employee details, conversation details, and message history for Zalo, Facebook, LiveTalk and more.
+- `search_channel_messages` now only needs the conversation ID.
+- `list_agents` returns a compact list instead of a very large response.
+- Clearer "not found" errors.
+
+### Removed (temporarily)
+- Creating ring groups / IVR menus / call scripts / TTS greetings, editing group members, registering webhooks, and bulk ticket/conversation transfer — please use the OmiCall web app for these for now.
+
+### Fixed
+- Contact search now correctly filters by created date (the date range was previously ignored).
+- Date filters ("today", "on the 19th") now follow Vietnam time; previously ranges were shifted by 7 hours, and the last day of a call/conversation range could be missed.
+- Contact search and creation now always use the tenant's default customer list.
+
+### Added
+- Filter contacts by person in charge, creator, tag, customer group, business type and customer status — on the server, without loading every contact.
+- `count_contacts` — count matching contacts instead of paging through all of them.
+- `get_contact_filter_options` — lists the available tags, groups, business types and statuses with their IDs.
+- Contact search results now show owner, creator, created date, tags, groups and status directly, so there is no need to open each contact.
+
+### Changed
+- Clearer error messages: failed requests now show the server's reason and a hint instead of a generic "Request failed".
+- New `OMICALL_TOOLSETS` option to load only the tool groups you need (smaller context, faster responses). Tools for modules not in your service package are hidden automatically after login.
+- `OMICALL_ENV` no longer needs to be set.
+
+### Security
+- Stronger protection against prompt injection: content written by customers (chat messages, tickets, contacts) is now clearly marked as untrusted data, and the assistant is instructed never to act on instructions found inside it.
+- Built-in safety limits for actions with real-world effects: outbound messages (30/min), outbound calls (100 per hour, counted per destination number) and deletions (30/min). Bulk jobs should use the OmiCall web app.
+- High-impact tools (auto-call, extension password change, webhook registration, agent invitation, ticket/conversation transfer) are now flagged so MCP clients ask for confirmation before running them.
+- Tighter input limits (e.g. max 50 numbers per auto-call request, max 3 retries, page size ≤ 50).
+- Broader masking of credentials in tool responses.
+- Permission checks now apply consistently for every session, including restored sessions and after switching tenant.
+- Saved sessions are tied to the configured account and environment.
+- Hardened network handling and updated dependencies to their latest secure versions.
+- Published packages now include npm provenance.
+
 ## [1.3.1] - 2026-07-13
 
 ### Added
