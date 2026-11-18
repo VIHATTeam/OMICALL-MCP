@@ -4,6 +4,16 @@ All notable changes to OmiCall MCP Server are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/). Versioning follows [Semantic Versioning](https://semver.org/).
 
+## [1.4.1] - 2026-11-18
+
+### Fixed
+- The first tool call now logs in automatically when there is no saved session. Previously it could fail with `http_500` until `login_omicall_mcp` was called explicitly.
+- Several MCP servers for different accounts or tenants on the same machine no longer overwrite each other's session: sessions are now stored per account. A session belonging to another account is never reused.
+- Clear error messages when automatic login isn't possible (no credentials configured, or the account has several tenants and none is selected).
+
+### Added
+- `get_omibot` and `get_callbot_script` accept `full: true` to return the whole system prompt / SmartAgent instruction instead of the first 3,000 characters.
+
 ## [1.4.0] - 2026-11-17
 
 ### Added

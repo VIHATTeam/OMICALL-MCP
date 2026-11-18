@@ -61,7 +61,7 @@ claude mcp add omicall --scope user \
   -- npx -y omicall-mcp
 ```
 
-Then ask: *"Log in to OmiCall and show my service package."* The server logs in automatically on first use and keeps the session in `~/.omicall-mcp/session.json`.
+Then ask: *"Log in to OmiCall and show my service package."* The server logs in automatically on the first tool call (no explicit login needed) and keeps one session per account in `~/.omicall-mcp/`, so several tenants can run side by side.
 
 ## Configuration
 
@@ -248,7 +248,7 @@ Each heading shows the toolset key (for `OMICALL_TOOLSETS`) and the service-pack
 
 | Tool | Description | Impact |
 |---|---|---|
-| `login_omicall_mcp` | Log in (pre-auth → tenant → token); usually automatic | ✏️ |
+| `login_omicall_mcp` | Log in explicitly or switch domain (pre-auth → tenant → token). Not needed normally: the first tool call logs in | ✏️ |
 | `select_tenant` / `logout` | Switch tenant; log out and clear the saved session | ✏️ |
 | `get_balance` / `get_service_package` | Account balance; enabled modules and limits | 📖 |
 | `get_version` | Version of the running server | 📖 |
@@ -340,14 +340,14 @@ Channels: Zalo OA, Zalo personal, Facebook Messenger, Facebook comments, Telegra
 
 | Tool | Description | Impact |
 |---|---|---|
-| `list_omibots` / `get_omibot` | OmiBot chatbots: status, reply mode, model, system prompt, knowledge sources | 📖 |
+| `list_omibots` / `get_omibot` | OmiBot chatbots: status, reply mode, model, system prompt (`full: true` for the whole prompt), knowledge sources | 📖 |
 | `list_ai_models` | Models available for chatbots and SmartAgent | 📖 |
 | `set_conversation_bot` | Turn the AI bot on/off for one conversation (hand over to a human) | ✏️ |
 | `list_knowledge_documents` / `get_knowledge_quota` | Knowledge warehouse documents; training usage | 📖 |
 | `list_qa_sets` / `list_qa_cases` | FAQ sets and their questions/answers | 📖 |
 | `list_ai_social_assistants` | Conversation analyzers (summary, auto-tag, ticket/contact fields) | 📖 |
 | `set_ai_social_assistant_enabled` | Enable/disable a conversation analyzer | ✏️ |
-| `list_callbot_scripts` / `get_callbot_script` | Voice scripts: **SmartAgent** (LLM voice agent) and CallFlow — model, instructions, variables, exit conditions | 📖 |
+| `list_callbot_scripts` / `get_callbot_script` | Voice scripts: **SmartAgent** (LLM voice agent) and CallFlow — model, instructions (`full: true` for the whole text), variables, exit conditions | 📖 |
 | `list_callbot_voices` | Available voices | 📖 |
 | `search_callbot_campaigns` / `get_callbot_campaign` | Outbound callbot campaigns and their configuration | 📖 |
 | `pause_callbot_campaign` | Pause a running campaign | ✏️ |
@@ -401,7 +401,7 @@ OmiCall MCP is built for AI agents acting on a live system:
 - **Permissions follow the web app.** Ticket, contact, OmiFlow, callbot and AI-assistant actions check your OmiCall role; the conversation bot switch requires the tenant owner or an agent who joined the conversation. OmiCall's servers enforce permissions as well.
 - **Secrets stay out of answers.** SIP passwords, tokens and API keys are redacted, including keys pasted into bot prompts.
 - **Bounded inputs.** Every parameter has a size limit; page size is at most 50.
-- **Session file** `~/.omicall-mcp/session.json` is readable only by you (`0600`) and bound to the configured account.
+- **Session files** in `~/.omicall-mcp/` (one per account/domain) are readable only by you (`0600`); a session is only ever reused by the account it belongs to.
 
 Recommended: auto-approve read tools only (see [Claude Code setup](#setup-per-client)) and keep confirmation for ✏️ and ⚠️ tools.
 
@@ -421,6 +421,8 @@ Ask the assistant to run `get_version` to see which version is actually running.
 **"Module X is not enabled in your service package"** — the feature is not in your OmiCall plan; contact OmiCall to enable it.
 
 **"Permission denied … requires role …"** — your OmiCall role does not allow that action; ask your administrator.
+
+**Account with several tenants** — set `OMICALL_TENANT_ID`, or ask the assistant to run `select_tenant`; otherwise tools answer *"This account belongs to several tenants…"*.
 
 **"Rate limit reached"** — a safety limit for this session; wait for the time shown, or do bulk work in the OmiCall web app.
 
